@@ -1,0 +1,19 @@
+name: shop
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:3000
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/package.json
+  
+
+
