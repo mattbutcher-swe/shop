@@ -1,22 +1,17 @@
 import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Recipes from './Recipes';
+import AddRecipe from './AddRecipe';
+
 
 function App() {
   return (
-    <div className="App">
-      Recipes
-      <button>Add</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Order</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-    </div>
+    <Routes>
+      <Route path="/" element={<Recipes />} />
+      <Route path="/recipes" element={<Recipes />} />
+      <Route path="/recipes/add" element={<AddRecipe />} />
+    </Routes>
   );
 }
 

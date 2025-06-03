@@ -1,6 +1,6 @@
 import './App.css';
 
-function App() {
+function AddRecipe() {
   return (
     <div className="App">
       Add Recipe
@@ -13,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default AddRecipe;
