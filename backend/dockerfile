@@ -9,4 +9,4 @@ EXPOSE 8080 5005
 ENTRYPOINT ["java", \
   "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", \
   "-cp", "/app/classes:/app/dependency/*", \
-  "github.com.mattbutcher_swe.shop_backend.Test"]
+  "github.com.mattbutcher_swe.shop_backend.ShopBackendApplication"]
