@@ -1,7 +1,10 @@
 package github.com.mattbutcher_swe.shop_backend.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,15 @@ public class RecipeController {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+
+    @GetMapping
+    public List<RecipeDTO> getAllRecipes() {
+        List<Recipe> recipes = recipeRepository.findAll();
+        
+        return recipes.stream()
+                    .map(RecipeDTO::toRecipeDTO)
+                    .toList();
+    }
 
     @PostMapping
     public Recipe createRecipe(@RequestBody RecipeDTO recipeDTO) {

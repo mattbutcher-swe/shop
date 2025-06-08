@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './App.css';
 
 function AddRecipe() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([]);
+  const navigate = useNavigate();
 
   const appendNewIngredientInput = () => {
     setIngredients([...ingredients, { name: '', quantity: '' }]);
@@ -45,11 +48,7 @@ function AddRecipe() {
         return;
       }
 
-      alert('Recipe submitted successfully!');
-      // Optionally reset form
-      setName('');
-      setDescription('');
-      setIngredients([]);
+      navigate('/');
     } catch (error) {
       console.error('Error submitting recipe:', error);
       alert('Failed to submit recipe. Is the backend running?');
