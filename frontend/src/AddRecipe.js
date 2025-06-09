@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Layout from './components/layout';
+import { Link } from 'react-router-dom';
 
-import './App.css';
+const Header = () => (
+  <span>Create meal</span>
+);
 
-function AddRecipe() {
+const Main = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([]);
@@ -56,52 +60,45 @@ function AddRecipe() {
   };
 
   return (
-    <div className="App container">
-      <h3 className="my-4">Add Recipe</h3>
-      <form onSubmit={handleSubmit}>
-        {/* Name */}
-        <div className="form-group row">
-          <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+    <form id="addMeal" onSubmit={handleSubmit}>
+      <div className="form-group row mb-2">
+        <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
+        <div className="col-sm-10">
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
         </div>
-
-        {/* Description */}
-        <div className="form-group row">
-          <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
+      </div>
+      <div className="form-group row mb-2">
+        <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
+        <div className="col-sm-10">
+          <input
+            type="text"
+            className="form-control"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
         </div>
+      </div>
 
-        {/* Ingredients Header */}
-        <div className="form-group row align-items-center">
-          <label className="col-sm-2 col-form-label">Ingredients</label>
-          <div className="col-sm-10 text-end">
-            <button type="button" onClick={appendNewIngredientInput} className="btn btn-success">
-              +
-            </button>
-          </div>
+      <div className="form-group row align-items-center mb-2">
+        <label className="col-sm-2 col-form-label">Ingredients</label>
+        <div className="col-sm-10 text-end">
+          <button type="button" className='btn btn-primary' onClick={appendNewIngredientInput}>
+            +
+          </button>
         </div>
-
-        {/* Ingredient Rows */}
+      </div>
+      <div className='v-grow-scroll'>
         {ingredients.map((ingredient, index) => (
-          <div className="form-group row align-items-center mb-2" key={index}>
+          <div className="form-group row justify-content-end mb-2" key={index}>
             <div className="col-sm-4">
               <input
                 type="text"
@@ -122,10 +119,10 @@ function AddRecipe() {
                 required
               />
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 text-end">
               <button
                 type="button"
-                className="btn btn-danger"
+                className='btn btn-danger'
                 onClick={() => removeIngredientInput(index)}
               >
                 –
@@ -133,15 +130,30 @@ function AddRecipe() {
             </div>
           </div>
         ))}
+      </div>
+    </form>
+  )
+};
 
-        {/* Submit Button */}
-        <div className="form-group row mt-4">
-          <div className="col-sm-10 offset-sm-2">
-            <button type="submit" className="btn btn-primary">Submit Recipe</button>
-          </div>
-        </div>
-      </form>
+const Footer = () => {
+  return (
+    <div className='d-flex flex-row'>
+      <Link to="/recipes/">
+        <button type="button" class="btn btn-secondary">Recipes</button>
+      </Link>
+      <button type="submit" form='addMeal' className='ms-auto btn btn-primary'>Save</button>
     </div>
+  );
+};
+
+function AddRecipe() {
+  return (
+    <Layout
+      header={<Header />}
+      main={<Main />}
+      footer={<Footer />}
+    >
+    </Layout>
   );
 }
 

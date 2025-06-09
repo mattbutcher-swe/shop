@@ -1,0 +1,32 @@
+#root,
+html,
+body {
+    height: 100%;
+}
+
+.header {
+    padding: 10px;
+    border: solid 1px black;
+    text-align: center;
+}
+
+.body {
+    padding: 20px 10px;
+}
+
+.footer {
+    padding: 10px;
+    border: solid 1px black;
+}
+
+.v-stack-fill {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.v-grow-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
