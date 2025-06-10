@@ -45,11 +45,14 @@ const Main = () => {
 }
 
 const Footer = () => (
-  <Link to="/recipes/add">
-    <button className='btn btn-primary'>
-      Create meal
-    </button>
-  </Link>
+  <div className='d-flex flex-row'>
+    <Link to="/recipes/add">
+      <button className='btn btn-primary'>
+        Create meal
+      </button>
+    </Link>
+    <button type="submit" disabled className='ms-auto btn btn-primary'>Order</button>
+  </div>
 );
 
 const Recipes = () => {
