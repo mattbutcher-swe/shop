@@ -1,9 +1,9 @@
 import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Recipes from './Recipes';
-import AddRecipe from './AddRecipe';
-import NotFound from './NotFound';
+import Recipes from './pages/Recipes';
+import AddRecipe from './pages/AddRecipe';
+import NotFound from './pages/NotFound';
 
 
 function App() {
