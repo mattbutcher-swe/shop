@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 
 const Header = () => (
   <span>Meals</span>

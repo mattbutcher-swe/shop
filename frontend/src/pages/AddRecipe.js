@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import { Link } from 'react-router-dom';
 
 const Header = () => (
