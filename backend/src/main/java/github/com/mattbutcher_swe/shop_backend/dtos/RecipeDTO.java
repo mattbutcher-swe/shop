@@ -5,6 +5,7 @@ import java.util.List;
 import github.com.mattbutcher_swe.shop_backend.models.Recipe;
 
 public class RecipeDTO {
+    public Long id;
     public String name;
     public String description;
     public List<IngredientDTO> ingredients;
@@ -17,6 +18,7 @@ public class RecipeDTO {
     public static RecipeDTO toRecipeDTO(Recipe recipe) {
         RecipeDTO dto = new RecipeDTO();
         
+        dto.id = recipe.getId();
         dto.name = recipe.getName();
         dto.description = recipe.getDescription();
         dto.ingredients = recipe.getIngredients().stream().map(ri -> {

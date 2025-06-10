@@ -32,9 +32,9 @@ const Main = () => {
   }, []);
 
   return (
-    recipes.map((recipe, index) => (
-      <div className="form-check">
-        <label className="form-check-label" for="flexCheckChecked">
+    recipes.map((recipe) => (
+      <div className="form-check" key={recipe.id}>
+        <label className="form-check-label" htmlFor="flexCheckChecked">
           {recipe.name}
         </label>
         <input className="form-check-input" type="checkbox"></input>
