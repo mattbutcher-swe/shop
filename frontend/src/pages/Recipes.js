@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import Layout from '../components/Layout';
+import RecipeTile from '../components/RecipeTile';
 
 const Header = () => (
   <span>Meals</span>
@@ -32,15 +33,14 @@ const Main = () => {
   }, []);
 
   return (
-    recipes.map((recipe) => (
-      <div className="form-check" key={recipe.id}>
-        <label className="form-check-label" htmlFor="flexCheckChecked">
-          {recipe.name}
-        </label>
-        <input className="form-check-input" type="checkbox"></input>
-      </div>
-    ))
-  );  
+    <div className='row'>
+      {recipes.map((recipe) => (
+        <div className='col-lg-3 col-md-4 col-6 mb-4' key={recipe.id}>
+          <RecipeTile recipe={recipe} />
+        </div>
+      ))}
+    </div>
+  );
 }
 
 const Footer = () => (
