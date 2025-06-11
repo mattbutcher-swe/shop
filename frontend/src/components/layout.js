@@ -8,7 +8,7 @@ const Layout = ({ header, main, footer }) => {
     <div className="v-stack-fill">
       <header className="header">
         <Navbar/>
-        <h2>{header}</h2>
+        <h3>{header}</h3>
       </header>
       <main className="body v-grow-scroll">
         <div className='container-lg h-100'>
