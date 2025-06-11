@@ -1,10 +1,13 @@
 package github.com.mattbutcher_swe.shop_backend.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +34,22 @@ public class RecipeController {
     @GetMapping
     public List<RecipeDTO> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
-        
+
         return recipes.stream()
                     .map(RecipeDTO::toRecipeDTO)
                     .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable Long id) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+
+        if (recipeOptional.isPresent()) {
+            RecipeDTO dto = RecipeDTO.toRecipeDTO(recipeOptional.get());
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping

@@ -1,17 +1,50 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const Header = () => (
-  <span>Create meal</span>
-);
+const Header = ({recipeId}) => {
+  if (!recipeId) {
+    return (
+      <span>Create meal</span>
+    )
+  } else {
+    return (
+      <span>Edit meal</span>
+    )
+  }
+};
 
-const Main = () => {
+const Main = ({recipeId}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (recipeId) {
+      const fetchRecipe = async () => {
+        const url = "http://localhost:8080/recipes/" + recipeId;
+  
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+  
+          const json = await response.json();
+          setName(json.name);
+          setDescription(json.description);
+          setIngredients(json.ingredients || []);
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+  
+      fetchRecipe(); 
+    }
+  }, [recipeId]);
+  
 
   const appendNewIngredientInput = () => {
     setIngredients([...ingredients, { name: '', quantity: '' }]);
@@ -143,15 +176,15 @@ const Footer = () => {
   );
 };
 
-function AddRecipe() {
+function RecipeForm({recipeId}) {
   return (
     <Layout
-      header={<Header />}
-      main={<Main />}
+      header={<Header recipeId={recipeId} />}
+      main={<Main recipeId={recipeId} />}
       footer={<Footer />}
     >
     </Layout>
   );
 }
 
-export default AddRecipe;
+export default RecipeForm;

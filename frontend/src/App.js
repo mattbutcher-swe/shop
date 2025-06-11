@@ -2,7 +2,8 @@ import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Recipes from './pages/Recipes';
-import AddRecipe from './pages/AddRecipe';
+import RecipeForm from './pages/RecipeForm';
+import EditRecipe from './pages/EditRecipe';
 import NotFound from './pages/NotFound';
 
 
@@ -11,7 +12,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Recipes />} />
       <Route path="/recipes" element={<Recipes />} />
-      <Route path="/recipes/add" element={<AddRecipe />} />
+      <Route path="/recipes/add" element={<RecipeForm />} />
+      <Route path="/recipes/edit/:id" element={<EditRecipe />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
