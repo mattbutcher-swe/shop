@@ -138,9 +138,6 @@ const Main = () => {
 const Footer = () => {
   return (
     <div className='d-flex flex-row'>
-      <Link to="/recipes/">
-        <button type="button" class="btn btn-secondary">Meals</button>
-      </Link>
       <button type="submit" form='addMeal' className='ms-auto btn btn-primary'>Save</button>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import './Layout.css';
+import '../App.css';
 
 const Layout = ({ header, main, footer }) => {
   return (
@@ -9,8 +10,10 @@ const Layout = ({ header, main, footer }) => {
         <Navbar/>
         <h2>{header}</h2>
       </header>
-      <main className="body v-grow-scroll container-lg">
-        {main}
+      <main className="body v-grow-scroll">
+        <div className='container-lg h-100'>
+            {main}
+        </div>
       </main>
       <footer className="footer">
         <div className='container-lg'>

@@ -16,15 +16,3 @@ body {
 .footer {
     padding: 10px;
 }
-
-.v-stack-fill {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.v-grow-scroll {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
