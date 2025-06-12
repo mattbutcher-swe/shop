@@ -4,3 +4,9 @@
     border: solid 1px black;
     border-radius: 5px;
 }
+
+
+.ordered {
+    border-color: var(--bs-primary);
+    border-width: 2px;
+}
