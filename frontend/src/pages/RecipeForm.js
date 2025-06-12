@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useEffect } from 'react';
 
-const Header = ({recipeId}) => {
-  if (!recipeId) {
+const Header = ({id}) => {
+  if (!id) {
     return (
       <span>Create meal</span>
     )
@@ -15,16 +15,16 @@ const Header = ({recipeId}) => {
   }
 };
 
-const Main = ({recipeId}) => {
+const Main = ({id}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (recipeId) {
+    if (id) {
       const fetchRecipe = async () => {
-        const url = "http://localhost:8080/recipes/" + recipeId;
+        const url = "http://localhost:8080/recipes/" + id;
   
         try {
           const response = await fetch(url);
@@ -43,7 +43,7 @@ const Main = ({recipeId}) => {
   
       fetchRecipe(); 
     }
-  }, [recipeId]);
+  }, [id]);
   
 
   const appendNewIngredientInput = () => {
@@ -64,13 +64,18 @@ const Main = ({recipeId}) => {
     e.preventDefault();
 
     const recipeData = {
+      id,
       name,
       description,
       ingredients
     };
 
     try {
-      const response = await fetch('http://localhost:8080/recipes', {
+      let url = "http://localhost:8080/recipes/create";
+      if (id) {
+        url = "http://localhost:8080/recipes/update";
+      }
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -176,11 +181,11 @@ const Footer = () => {
   );
 };
 
-function RecipeForm({recipeId}) {
+function RecipeForm({id}) {
   return (
     <Layout
-      header={<Header recipeId={recipeId} />}
-      main={<Main recipeId={recipeId} />}
+      header={<Header id={id} />}
+      main={<Main id={id} />}
       footer={<Footer />}
     >
     </Layout>

@@ -3,7 +3,7 @@ import RecipeForm from './RecipeForm';
 
 function EditRecipe() {
   const { id } = useParams();
-  return <RecipeForm recipeId={id} />;
+  return <RecipeForm id={id} />;
 }
 
 export default EditRecipe;
