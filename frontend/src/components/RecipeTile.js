@@ -5,7 +5,7 @@ import '../App.css';
 
 const RecipeTile = ({ recipe }) => {
     return (
-        <div className='recipe-tile v-stack-fill'>
+        <div className='recipe-tile v-stack-fill h-auto'>
             <div className="v-grow-scroll d-flex align-items-center justify-content-center">
                     {recipe.name}
             </div>
