@@ -67,7 +67,11 @@ const Main = ({recipesToOrder, setRecipesToOrder}) => {
 
 const Footer = ({recipesToOrder}) => (
   <div className='d-flex flex-row'>
-    <button type="submit" disabled className='ms-auto btn btn-primary'>Order ({recipesToOrder.length})</button>
+    <button type="submit"       
+      disabled={recipesToOrder.length === 0}
+      className='ms-auto btn btn-primary'>
+        Order ({recipesToOrder.length})
+    </button>
   </div>
 );
 
