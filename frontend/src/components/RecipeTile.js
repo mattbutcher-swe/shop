@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import './RecipeTile.css'
 import '../App.css';
 
-const RecipeTile = ({ recipe }) => {
+const RecipeTile = ({ recipe, updateRecipesToOrder }) => {
     const updateOrderStatus = (e) => {
         const tile = e.currentTarget;
         tile.classList.toggle('ordered');
+        const ordered = tile.classList.contains('ordered');
+        updateRecipesToOrder(recipe.id, ordered);
     }
 
     return (

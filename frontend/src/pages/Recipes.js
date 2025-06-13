@@ -11,8 +11,19 @@ const Header = () => (
   <span>Meals</span>
 );
 
-const Main = () => {
+const Main = ({recipesToOrder, setRecipesToOrder}) => {
   const [recipes, setRecipes] = useState([]);
+
+  const updateRecipesToOrder = (recipeId, order) => {
+    if (order) {
+      const recipe = recipes.find(r => r.id === recipeId);
+      if (recipe && !recipesToOrder.some(r => r.id === recipeId)) {
+        setRecipesToOrder(prev => [...prev, recipe]);
+      }
+    } else {
+      setRecipesToOrder(prev => prev.filter(r => r.id !== recipeId));
+    }
+  }
 
   const fetchRecipes = async () => {
     const url = "http://localhost:8080/recipes";
@@ -46,7 +57,7 @@ const Main = () => {
       <div className='row v-grow-scroll'>
         {recipes.map((recipe) => (
           <div className='col-lg-3 col-md-4 col-6 mb-4' key={recipe.id}>
-            <RecipeTile recipe={recipe} />
+            <RecipeTile recipe={recipe} updateRecipesToOrder={updateRecipesToOrder} />
           </div>
         ))}
       </div>
@@ -54,18 +65,20 @@ const Main = () => {
   );
 }
 
-const Footer = () => (
+const Footer = ({recipesToOrder}) => (
   <div className='d-flex flex-row'>
-    <button type="submit" disabled className='ms-auto btn btn-primary'>Order</button>
+    <button type="submit" disabled className='ms-auto btn btn-primary'>Order ({recipesToOrder.length})</button>
   </div>
 );
 
 const Recipes = () => {
+  const [recipesToOrder, setRecipesToOrder] = useState([]);
+
   return (
     <Layout
       header={<Header />}
-      main={<Main />}
-      footer={<Footer />}
+      main={<Main recipesToOrder={recipesToOrder} setRecipesToOrder={setRecipesToOrder}/>}
+      footer={<Footer recipesToOrder={recipesToOrder}/>}
     >
     </Layout>
   );
