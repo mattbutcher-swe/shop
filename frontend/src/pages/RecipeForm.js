@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useEffect } from 'react';
 
-const Header = ({id}) => {
+const Header = ({ id }) => {
   if (!id) {
     return (
       <span>Create meal</span>
@@ -15,7 +15,7 @@ const Header = ({id}) => {
   }
 };
 
-const Main = ({id}) => {
+const Main = ({ id }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [ingredients, setIngredients] = useState([]);
@@ -25,13 +25,13 @@ const Main = ({id}) => {
     if (id) {
       const fetchRecipe = async () => {
         const url = "http://localhost:8080/recipes/" + id;
-  
+
         try {
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
           }
-  
+
           const json = await response.json();
           setName(json.name);
           setDescription(json.description);
@@ -40,11 +40,11 @@ const Main = ({id}) => {
           console.error(error.message);
         }
       };
-  
-      fetchRecipe(); 
+
+      fetchRecipe();
     }
   }, [id]);
-  
+
 
   const appendNewIngredientInput = () => {
     setIngredients([...ingredients, { name: '', quantity: '' }]);
@@ -173,20 +173,34 @@ const Main = ({id}) => {
   )
 };
 
-const Footer = () => {
+const Footer = ({ id }) => {
+  const navigate = useNavigate();
+
+  const deleteMeal = async () => {
+    if (confirm('Please confirm deletion.')) {
+      let url = "http://localhost:8080/recipes/delete/" + id;
+      const response = await fetch(url, { method: 'DELETE' });
+      
+      if (response.ok) {
+        navigate('/');
+      }
+    }
+  }
+
   return (
-    <div className='d-flex flex-row'>
-      <button type="submit" form='addMeal' className='ms-auto btn btn-primary'>Save</button>
+    <div className='d-flex flex-row justify-content-between'>
+      <button className='btn btn-danger' onClick={() => deleteMeal()}>Delete</button>
+      <button type="submit" form='addMeal' className='btn btn-primary'>Save</button>
     </div>
   );
 };
 
-function RecipeForm({id}) {
+function RecipeForm({ id }) {
   return (
     <Layout
       header={<Header id={id} />}
       main={<Main id={id} />}
-      footer={<Footer />}
+      footer={<Footer id={id} />}
     >
     </Layout>
   );
