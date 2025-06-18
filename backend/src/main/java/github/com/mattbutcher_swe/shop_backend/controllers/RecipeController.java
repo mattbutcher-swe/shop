@@ -1,6 +1,5 @@
 package github.com.mattbutcher_swe.shop_backend.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +18,8 @@ import github.com.mattbutcher_swe.shop_backend.repositories.RecipeIngredientRepo
 import github.com.mattbutcher_swe.shop_backend.repositories.RecipeRepository;
 import jakarta.transaction.Transactional;
 import github.com.mattbutcher_swe.shop_backend.dtos.RecipeDTO;
+import github.com.mattbutcher_swe.shop_backend.dtos.IngredientDTO;
+
 import github.com.mattbutcher_swe.shop_backend.models.Ingredient;
 import github.com.mattbutcher_swe.shop_backend.models.Recipe;
 import github.com.mattbutcher_swe.shop_backend.models.RecipeIngredient;
@@ -64,7 +65,7 @@ public class RecipeController {
         recipe.setName(recipeDTO.name);
         recipe.setDescription(recipeDTO.description);
 
-        for (RecipeDTO.IngredientDTO ingDTO : recipeDTO.ingredients) {
+        for (IngredientDTO ingDTO : recipeDTO.ingredients) {
             Ingredient ingredient = ingredientRepository.findByName(ingDTO.name).orElseGet(() -> {
                 Ingredient newIng = new Ingredient();
                 newIng.setName(ingDTO.name);
@@ -92,7 +93,7 @@ public class RecipeController {
         recipeIngredientRepository.deleteByRecipeId(recipe.getId());
         recipe.getIngredients().clear();
 
-        for (RecipeDTO.IngredientDTO ingDTO : recipeDTO.ingredients) {
+        for (IngredientDTO ingDTO : recipeDTO.ingredients) {
             Ingredient ingredient = ingredientRepository.findByName(ingDTO.name)
                     .orElseGet(() -> {
                         Ingredient newIng = new Ingredient();

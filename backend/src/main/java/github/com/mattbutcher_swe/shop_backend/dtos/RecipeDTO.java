@@ -10,11 +10,6 @@ public class RecipeDTO {
     public String description;
     public List<IngredientDTO> ingredients;
 
-    public static class IngredientDTO {
-        public String name;
-        public String quantity;
-    }
-
     public static RecipeDTO toRecipeDTO(Recipe recipe) {
         RecipeDTO dto = new RecipeDTO();
         
@@ -22,7 +17,7 @@ public class RecipeDTO {
         dto.name = recipe.getName();
         dto.description = recipe.getDescription();
         dto.ingredients = recipe.getIngredients().stream().map(ri -> {
-            RecipeDTO.IngredientDTO ingDTO = new RecipeDTO.IngredientDTO();
+            IngredientDTO ingDTO = new IngredientDTO();
             ingDTO.name = ri.getIngredient().getName();
             ingDTO.quantity = ri.getAmount();
             return ingDTO;

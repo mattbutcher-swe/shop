@@ -24,6 +24,9 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipeUsages = new ArrayList<>();
 
+    @Column(name = "pantry_quantity")
+    private String pantryQuantity;
+
     public Long getId() {
         return id;
     }
@@ -40,6 +43,14 @@ public class Ingredient {
         this.name = name;
     }
 
+    public String getPantryQuantity() {
+        return this.pantryQuantity;
+    }
+
+    public void setPantryQuantity(String quantity) {
+        this.pantryQuantity = quantity;
+    }
+
     public List<RecipeIngredient> getRecipeUsages() {
         return recipeUsages;
     }
@@ -47,5 +58,6 @@ public class Ingredient {
     public void setRecipeUsages(List<RecipeIngredient> recipeUsages) {
         this.recipeUsages = recipeUsages;
     }
+
     
 }

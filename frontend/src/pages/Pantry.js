@@ -1,0 +1,233 @@
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { distance } from 'fastest-levenshtein';
+import Layout from '../components/Layout';
+import '../App.css';
+
+const Header = () => (
+    <span>Pantry</span>
+);
+
+const Main = () => {
+    const [ingredients, setIngredients] = useState([]);
+    const [filteredIngredients, setFilteredIngredients] = useState([]);
+
+    useEffect(() => {
+        fetchIngredients();
+    }, []);
+
+    const filterIngredients = (e) => {
+        let filter = e.target.value;
+
+        if (filter) {
+            setFilteredIngredients(ingredients.filter(i => {
+                const name = i.name.toLowerCase();
+                const maxDistance = Math.floor(name.length * 0.5);
+                return distance(name, filter) <= maxDistance;
+            }));
+        } else {
+            setFilteredIngredients(ingredients);
+        }
+    }
+
+    const deleteIngredient = async (ingredient) => {
+        if (confirm('Please confirm deletion')) {
+            const url = "http://localhost:8080/pantry/delete/" + ingredient.id;
+            try {
+                const response = await fetch(url, { method: 'DELETE' });
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                setIngredients((prev) => prev.filter(i => i.id !== ingredient.id));
+                setFilteredIngredients((prev) => prev.filter(i => i.id !== ingredient.id));
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+    }
+
+    const updateIngredient = async (ingredient, e) => {
+        const ingredientForm = e.target.closest('.ingredient-form');
+
+        const ingredientData = {
+            id: ingredient.id,
+            name: ingredientForm.querySelector('[name="name"]').value,
+            quantity: ingredientForm.querySelector('[name="quantity"]').value
+        }
+
+        try {
+            const url = "http://localhost:8080/pantry/update";
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ingredientData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error updating ingredient', errorData);
+                alert('Failed to update ingredient.');
+                return;
+            }
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    const createIngredient = async (e) => {
+        e.preventDefault();
+        const ingredientForm = e.target.closest('.ingredient-form');
+
+        let ingredientData = {
+            name: ingredientForm.querySelector('[name="name"]').value,
+            quantity: ingredientForm.querySelector('[name="quantity"]').value
+        }
+
+        try {
+            const url = "http://localhost:8080/pantry/create";
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ingredientData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error creating ingredient', errorData);
+                alert('Failed to create ingredient.');
+                return;
+            } else {
+                ingredientData = await response.json();
+                setIngredients((prev) => prev.concat(ingredientData));
+                setFilteredIngredients((prev) => prev.concat(ingredientData));
+            }
+
+            ingredientForm.querySelector('[name="name"]').value = "";
+            ingredientForm.querySelector('[name="quantity"]').value = "";
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    const fetchIngredients = async () => {
+        const url = "http://localhost:8080/pantry";
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const json = await response.json();
+            setIngredients(json);
+            setFilteredIngredients(json);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    return (
+        <div className='v-stack-fill'>
+            <div className="form-group row mb-2">
+                <div className="col-sm-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Filter"
+                        onChange={(e) => filterIngredients(e)}
+                    />
+                </div>
+            </div>
+            <form className="form-group row ingredient-form mb-4" onSubmit={createIngredient}>
+                <div className="col-sm-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Name"
+                        name='name'
+                        required
+                    />
+                </div>
+                <div className="col-sm-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Quantity"
+                        name='quantity'
+                        required
+                    />
+                </div>
+                <div className="col-sm-4 d-flex justify-content-end">
+                    <button
+                        type="submit"
+                        className='btn btn-primary'
+                    >
+                        Create
+                    </button>
+                </div>
+            </form>
+            <div className='v-grow-scroll mb-4'>
+                {filteredIngredients.map((ingredient) => (
+                    <div className="form-group row ingredient-form mb-2" key={ingredient.id}>
+                        <div className="col-sm-4">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Name"
+                                name='name'
+                                defaultValue={ingredient.name}
+                                required
+                            />
+                        </div>
+                        <div className="col-sm-4">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Out of stock"
+                                name='quantity'
+                                defaultValue={ingredient.quantity}
+                            />
+                        </div>
+                        <div className="col-sm-4 d-flex justify-content-end">
+                            <button
+                                type="button"
+                                className='btn btn-danger'
+                                onClick={() => deleteIngredient(ingredient)}
+                            >
+                                Delete
+                            </button>
+                            <button
+                                type="button"
+                                className='btn btn-primary ms-2'
+                                onClick={(e) => updateIngredient(ingredient, e)}
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+const Pantry = () => {
+    return (
+        <Layout
+            header={<Header />}
+            main={<Main />}
+        >
+        </Layout>
+    );
+};
+
+export default Pantry;
