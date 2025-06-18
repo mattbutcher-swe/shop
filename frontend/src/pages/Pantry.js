@@ -16,14 +16,21 @@ const Main = () => {
         fetchIngredients();
     }, []);
 
+    const isSimilar = (word, filter) => {
+        word = word.toLowerCase();
+        const maxDistance = Math.floor(word.length * 0.5);
+        const close = distance(word, filter) <= maxDistance;
+        const substring = word.includes(filter.toLowerCase());
+        
+        return close || substring;
+    }
+
     const filterIngredients = (e) => {
         let filter = e.target.value;
 
         if (filter) {
             setFilteredIngredients(ingredients.filter(i => {
-                const name = i.name.toLowerCase();
-                const maxDistance = Math.floor(name.length * 0.5);
-                return distance(name, filter) <= maxDistance;
+                return isSimilar(i.name, filter);
             }));
         } else {
             setFilteredIngredients(ingredients);
@@ -74,6 +81,25 @@ const Main = () => {
                 return;
             }
 
+            const filter = document.getElementById('filter-input').value;
+
+            setIngredients((prev) => prev.map(i =>
+                i.id === ingredientData.id
+                    ? { ...i, name: ingredientData.name, quantity: ingredientData.quantity }
+                    : i
+            ));
+            if (filter) {
+                setFilteredIngredients((ingredients) => ingredients.filter(i => {
+                    if (i.id == ingredientData.id) {
+                        return isSimilar(ingredientData.name, filter)
+                    } else {
+                        return true;
+                    }
+                }
+                ));
+            } else {
+                setFilteredIngredients(ingredients);
+            }
         } catch (error) {
             console.error(error.message);
         }
@@ -144,6 +170,7 @@ const Main = () => {
                         className="form-control"
                         placeholder="Filter"
                         onChange={(e) => filterIngredients(e)}
+                        id='filter-input'
                     />
                 </div>
             </div>
