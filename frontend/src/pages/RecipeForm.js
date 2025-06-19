@@ -180,19 +180,26 @@ const Footer = ({ id }) => {
     if (confirm('Please confirm deletion.')) {
       let url = "http://localhost:8080/recipes/delete/" + id;
       const response = await fetch(url, { method: 'DELETE' });
-      
+
       if (response.ok) {
         navigate('/');
       }
     }
   }
-
-  return (
-    <div className='d-flex flex-row justify-content-between'>
-      <button className='btn btn-danger' onClick={() => deleteMeal()}>Delete</button>
-      <button type="submit" form='addMeal' className='btn btn-primary'>Save</button>
-    </div>
-  );
+  if (id) {
+    return (
+      <div className='d-flex flex-row justify-content-between'>
+        <button className='btn btn-danger' onClick={() => deleteMeal()}>Delete</button>
+        <button type="submit" form='addMeal' className='btn btn-primary'>Save</button>
+      </div>
+    );
+  } else {
+    return (
+      <div className='d-flex'>
+        <button type="submit" form='addMeal' className='ms-auto btn btn-primary'>Save</button>
+      </div>
+    )
+  }
 };
 
 function RecipeForm({ id }) {
