@@ -10,11 +10,16 @@ const Navbar = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item active">
+                        <li className="nav-item">
                             <a className="nav-link" href="/recipes">Meals</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="/pantry">Pantry</a>
+                        </li>
+                    </ul>
+                    <ul className="navbar-nav ms-auto">
+                        <li className="nav-item">
+                            <a className="nav-link" href="/settings">Settings</a>
                         </li>
                     </ul>
                 </div>

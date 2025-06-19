@@ -6,6 +6,7 @@ import RecipeForm from './pages/RecipeForm';
 import EditRecipe from './pages/EditRecipe';
 import Pantry from './pages/Pantry';
 import NotFound from './pages/NotFound';
+import Settings from './pages/Settings';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Route path="/recipes/add" element={<RecipeForm />} />
       <Route path="/recipes/edit/:id" element={<EditRecipe />} />
       <Route path="/pantry" element={<Pantry />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
