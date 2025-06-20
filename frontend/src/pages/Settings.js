@@ -16,7 +16,7 @@ const Main = ({
         <div className='v-stack-fill'>
             <div className='v-grow-scroll mb-4'>
                 <form id="settings">
-                    {/* Environment radios */}
+                    {/* Environment radio buttons */}
                     <div className="form-group row mb-2">
                         <label className="col-sm-2 col-form-label">Environment</label>
                         <div className="col-sm-10">
@@ -47,67 +47,77 @@ const Main = ({
                         </div>
                     </div>
 
-                    {/* The rest of the fields */}
-                    <div className="form-group row mb-2">
-                        <label htmlFor="devClientId" className="col-sm-2 col-form-label">Dev Client ID</label>
-                        <div className="col-sm-10">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="devClientId"
-                                value={devClientId}
-                                onChange={(e) => setDevClientId(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
+                    {/* Conditionally render Dev fields */}
+                    {environment === 'dev' && (
+                        <>
+                            <div className="form-group row mb-2">
+                                <label htmlFor="devClientId" className="col-sm-2 col-form-label">Dev Client ID</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="devClientId"
+                                        value={devClientId}
+                                        onChange={(e) => setDevClientId(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="form-group row mb-2">
-                        <label htmlFor="devClientSecret" className="col-sm-2 col-form-label">Dev Client Secret</label>
-                        <div className="col-sm-10">
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="devClientSecret"
-                                value={devClientSecret}
-                                onChange={(e) => setDevClientSecret(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
+                            <div className="form-group row mb-2">
+                                <label htmlFor="devClientSecret" className="col-sm-2 col-form-label">Dev Client Secret</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="devClientSecret"
+                                        value={devClientSecret}
+                                        onChange={(e) => setDevClientSecret(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </>
+                    )}
 
-                    <div className="form-group row mb-2">
-                        <label htmlFor="prodClientId" className="col-sm-2 col-form-label">Prod Client ID</label>
-                        <div className="col-sm-10">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="prodClientId"
-                                value={prodClientId}
-                                onChange={(e) => setProdClientId(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
+                    {/* Conditionally render Prod fields */}
+                    {environment === 'prod' && (
+                        <>
+                            <div className="form-group row mb-2">
+                                <label htmlFor="prodClientId" className="col-sm-2 col-form-label">Prod Client ID</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="prodClientId"
+                                        value={prodClientId}
+                                        onChange={(e) => setProdClientId(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="form-group row mb-2">
-                        <label htmlFor="prodClientSecret" className="col-sm-2 col-form-label">Prod Client Secret</label>
-                        <div className="col-sm-10">
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="prodClientSecret"
-                                value={prodClientSecret}
-                                onChange={(e) => setProdClientSecret(e.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
+                            <div className="form-group row mb-2">
+                                <label htmlFor="prodClientSecret" className="col-sm-2 col-form-label">Prod Client Secret</label>
+                                <div className="col-sm-10">
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="prodClientSecret"
+                                        value={prodClientSecret}
+                                        onChange={(e) => setProdClientSecret(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </form>
             </div>
         </div>
     );
 };
+
 
 const Footer = ({ onSave }) => {
     const navigate = useNavigate();
