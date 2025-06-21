@@ -16,6 +16,8 @@ public class Recipe {
     private String name;
     private String description;
 
+    private Boolean want = false;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
@@ -59,5 +61,13 @@ public class Recipe {
     public void removeIngredient(RecipeIngredient ingredient) {
         ingredients.remove(ingredient);
         ingredient.setRecipe(null);
+    }
+
+    public void setWant(Boolean want) {
+        this.want = want;
+    }
+
+    public Boolean getWant() {
+        return this.want;
     }
 }

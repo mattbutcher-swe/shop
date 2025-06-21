@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Layout from '../components/Layout';
 import RecipeTile from '../components/RecipeTile';
@@ -11,7 +12,7 @@ const Header = () => (
   <span>Meals</span>
 );
 
-const Main = ({recipesToOrder, setRecipesToOrder}) => {
+const Main = ({ recipesToOrder, setRecipesToOrder }) => {
   const [recipes, setRecipes] = useState([]);
 
   const updateRecipesToOrder = (recipeId, order) => {
@@ -65,24 +66,47 @@ const Main = ({recipesToOrder, setRecipesToOrder}) => {
   );
 }
 
-const Footer = ({recipesToOrder}) => (
+const Footer = ({ recipesToOrder, updateShoppingList }) => (
   <div className='d-flex flex-row'>
-    <button type="submit"       
+    <button type="submit"
       disabled={recipesToOrder.length === 0}
-      className='ms-auto btn btn-primary'>
-        Order ({recipesToOrder.length})
+      className='ms-auto btn btn-primary'
+      onClick={() => updateShoppingList()}>
+      Order ({recipesToOrder.length})
     </button>
   </div>
 );
 
 const Recipes = () => {
   const [recipesToOrder, setRecipesToOrder] = useState([]);
+  const navigate = useNavigate();
+
+  const updateShoppingList = async () => {
+    const url = "http://localhost:8080/shopping-list/update";
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(recipesToOrder)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error updating shopping list:', errorData);
+      alert('Failed to update shopping list.');
+      return;
+    } else {
+      navigate('/shopping-list');
+    }
+  }
 
   return (
     <Layout
       header={<Header />}
-      main={<Main recipesToOrder={recipesToOrder} setRecipesToOrder={setRecipesToOrder}/>}
-      footer={<Footer recipesToOrder={recipesToOrder}/>}
+      main={<Main recipesToOrder={recipesToOrder} setRecipesToOrder={setRecipesToOrder} />}
+      footer={<Footer recipesToOrder={recipesToOrder} updateShoppingList={updateShoppingList} />}
     >
     </Layout>
   );
