@@ -5,7 +5,7 @@ import github.com.mattbutcher_swe.shop_backend.models.Ingredient;
 public class IngredientDTO {
     public Long id;
     public String name;
-    public String quantity;
+    public Integer quantity;
 
     public static IngredientDTO toIngredientDTO(Ingredient ingredient) {
         IngredientDTO dto = new IngredientDTO();

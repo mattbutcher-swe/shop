@@ -25,7 +25,7 @@ public class Ingredient {
     private List<RecipeIngredient> recipeUsages = new ArrayList<>();
 
     @Column(name = "pantry_quantity")
-    private String pantryQuantity;
+    private Integer pantryQuantity;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Ingredient {
         this.name = name;
     }
 
-    public String getPantryQuantity() {
+    public Integer getPantryQuantity() {
         return this.pantryQuantity;
     }
 
-    public void setPantryQuantity(String quantity) {
+    public void setPantryQuantity(Integer quantity) {
         this.pantryQuantity = quantity;
     }
 

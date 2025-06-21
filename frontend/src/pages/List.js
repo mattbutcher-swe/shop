@@ -44,25 +44,30 @@ const Main = () => {
                   <th>Needed Quantity</th>
                   <th>Kroger Item</th>
                   <th>Kroger Item Quantity</th>
-                  <th>Item Price</th>
                   <th>Recipes</th>
                 </tr>
               </thead>
               <tbody>
-                {ingredients.map((ingredient) => (
-                  <tr key={ingredient.ingredientDTO.id}>
-                    <td>{ingredient.ingredientDTO.name}</td>
-                    <td>{ingredient.neededQuantity || '-'}</td>
-                    <td>{ingredient.krogerItem?.name || '-'}</td>
-                    <td><input type='number' /></td>
-                    <td>{ingredient.krogerItem?.price ? `$${ingredient.krogerItem.price.toFixed(2)}` : '-'}</td>
-                    <td>
-                      {ingredient.neededBy.map((recipe, index) => (
-                        <div key={index}>{recipe}</div>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
+                {ingredients.map((ingredient) => {
+                  const storedQuantity = ingredient.ingredientDTO.quantity ?? 0;
+                  const difference = ingredient.quantity - storedQuantity;
+
+                  return (
+                    <tr key={ingredient.ingredientDTO.id}>
+                      <td>{ingredient.ingredientDTO.name}</td>
+                      <td>
+                        {difference < 0 ? "Enough in stock" : difference}
+                      </td>
+                      <td>{ingredient.krogerItem?.name || '-'}</td>
+                      <td><input type="number" /></td>
+                      <td>
+                        {ingredient.neededBy.map((recipe, index) => (
+                          <div key={index}>{recipe}</div>
+                        ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -79,7 +84,7 @@ const Footer = ({ id }) => {
   return (
     <div className='d-flex flex-row justify-content-between'>
       <button className='btn btn-danger'>Back</button>
-      <button type="submit"className='btn btn-primary'>Order</button>
+      <button type="submit" className='btn btn-primary'>Order</button>
     </div>
   );
 };

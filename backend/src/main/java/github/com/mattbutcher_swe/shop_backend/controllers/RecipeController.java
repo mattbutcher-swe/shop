@@ -75,7 +75,7 @@ public class RecipeController {
 
             RecipeIngredient recipeIngredient = new RecipeIngredient();
             recipeIngredient.setIngredient(ingredient);
-            recipeIngredient.setAmount(ingDTO.quantity);
+            recipeIngredient.setQuantity(ingDTO.quantity);
             recipe.addIngredient(recipeIngredient);
         }
 
@@ -104,7 +104,7 @@ public class RecipeController {
 
             RecipeIngredient recipeIngredient = new RecipeIngredient();
             recipeIngredient.setIngredient(ingredient);
-            recipeIngredient.setAmount(ingDTO.quantity);
+            recipeIngredient.setQuantity(ingDTO.quantity);
 
             recipe.addIngredient(recipeIngredient);
         }

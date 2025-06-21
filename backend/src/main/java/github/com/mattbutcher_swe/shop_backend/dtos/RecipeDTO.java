@@ -20,7 +20,7 @@ public class RecipeDTO {
         dto.ingredients = recipe.getIngredients().stream().map(ri -> {
             IngredientDTO ingDTO = new IngredientDTO();
             ingDTO.name = ri.getIngredient().getName();
-            ingDTO.quantity = ri.getAmount();
+            ingDTO.quantity = ri.getQuantity();
             return ingDTO;
         }).toList();
         dto.want = recipe.getWant();

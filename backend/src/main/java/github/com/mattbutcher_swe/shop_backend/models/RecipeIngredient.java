@@ -21,7 +21,7 @@ public class RecipeIngredient {
     @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
 
-    private String amount;
+    private Integer quantity;
 
     public RecipeIngredientId getId() {
         return id;
@@ -53,11 +53,11 @@ public class RecipeIngredient {
         }
     }
 
-    public String getAmount() {
-        return amount;
+    public Integer getQuantity() {
+        return this.quantity;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

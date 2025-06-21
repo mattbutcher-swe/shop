@@ -32,37 +32,33 @@ public class ShoppingListController {
 
     @GetMapping("/")
     public List<NeededIngredientDTO> getNeededIngredients() {
-        // Get all recipes where order is true
         List<Recipe> recipes = recipeRepository.findByWantTrue();
 
-        // Create a map to group RecipeIngredients by ingredientId
         Map<Long, List<RecipeIngredient>> groupedByIngredientId = recipes.stream()
                 .flatMap(recipe -> recipe.getIngredients().stream())
                 .collect(Collectors.groupingBy(
                         ri -> ri.getId().getIngredientId()));
 
-        // Convert grouped ingredients to NeededIngredientDTO list
         List<NeededIngredientDTO> result = new ArrayList<>();
 
         for (Map.Entry<Long, List<RecipeIngredient>> entry : groupedByIngredientId.entrySet()) {
             List<RecipeIngredient> recipeIngredients = entry.getValue();
-
-            // Get the first RecipeIngredient to access the Ingredient
             RecipeIngredient firstRi = recipeIngredients.get(0);
-
-            // Convert Ingredient to IngredientDTO (assuming you have a conversion method)
             IngredientDTO ingredientDTO = IngredientDTO.toIngredientDTO(firstRi.getIngredient());
 
-            // Collect recipe names
             List<String> recipeNames = recipeIngredients.stream()
                     .map(ri -> ri.getRecipe().getName())
-                    .distinct() // Ensure no duplicate recipe names
+                    .distinct()
                     .collect(Collectors.toList());
 
-            // Create NeededIngredientDTO
+            double totalQuantity = recipeIngredients.stream()
+                    .mapToInt(RecipeIngredient::getQuantity)
+                    .sum();
+
             NeededIngredientDTO neededDTO = NeededIngredientDTO.toNeededIngredientDTO(
                     ingredientDTO,
-                    recipeNames);
+                    recipeNames,
+                    totalQuantity);
 
             result.add(neededDTO);
         }
