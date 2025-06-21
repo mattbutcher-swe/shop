@@ -12,7 +12,7 @@ const RecipeTile = ({ recipe, updateRecipesToOrder }) => {
     }
 
     return (
-        <div className='recipe-tile v-stack-fill h-auto' onClick={(e) => updateOrderStatus(e)}>
+        <div className={`recipe-tile v-stack-fill h-auto ${recipe.want ? 'ordered' : ''}`} onClick={(e) => updateOrderStatus(e)}>
             <div className="v-grow-scroll d-flex align-items-center justify-content-center">
                 {recipe.name}
             </div>

@@ -20,6 +20,7 @@ import github.com.mattbutcher_swe.shop_backend.models.Recipe;
 import github.com.mattbutcher_swe.shop_backend.models.RecipeIngredient;
 
 import github.com.mattbutcher_swe.shop_backend.repositories.RecipeRepository;
+import jakarta.transaction.Transactional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost")
@@ -70,7 +71,11 @@ public class ShoppingListController {
     }
 
     @PostMapping("/update")
+    @Transactional
     public void updateShoppingList(@RequestBody List<RecipeDTO> recipeDTOs) {
+        recipeRepository.setWantFalse();
+        recipeRepository.flush();
+
         for (RecipeDTO recipeDTO : recipeDTOs) {
             Recipe recipe = recipeRepository.findById(recipeDTO.id).get();
             if (recipe != null) {

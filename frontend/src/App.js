@@ -7,7 +7,7 @@ import EditRecipe from './pages/EditRecipe';
 import Pantry from './pages/Pantry';
 import NotFound from './pages/NotFound';
 import Settings from './pages/Settings';
-import ShoppingList from './pages/ShoppingList';
+import List from './pages/List';
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <Route path="/recipes/edit/:id" element={<EditRecipe />} />
       <Route path="/pantry" element={<Pantry />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/shopping-list" element={<ShoppingList />} />
+      <Route path="/list" element={<List />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

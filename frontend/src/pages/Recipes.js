@@ -37,6 +37,7 @@ const Main = ({ recipesToOrder, setRecipesToOrder }) => {
 
       const json = await response.json();
       setRecipes(json);
+      setRecipesToOrder(json.filter((recipe) => recipe.want === true));
     } catch (error) {
       console.error(error.message);
     }
@@ -72,7 +73,7 @@ const Footer = ({ recipesToOrder, updateShoppingList }) => (
       disabled={recipesToOrder.length === 0}
       className='ms-auto btn btn-primary'
       onClick={() => updateShoppingList()}>
-      Order ({recipesToOrder.length})
+      Review ({recipesToOrder.length})
     </button>
   </div>
 );
@@ -98,7 +99,7 @@ const Recipes = () => {
       alert('Failed to update shopping list.');
       return;
     } else {
-      navigate('/shopping-list');
+      navigate('/list');
     }
   }
 

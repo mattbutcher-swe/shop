@@ -9,6 +9,7 @@ public class RecipeDTO {
     public String name;
     public String description;
     public List<IngredientDTO> ingredients;
+    public Boolean want;
 
     public static RecipeDTO toRecipeDTO(Recipe recipe) {
         RecipeDTO dto = new RecipeDTO();
@@ -22,6 +23,7 @@ public class RecipeDTO {
             ingDTO.quantity = ri.getAmount();
             return ingDTO;
         }).toList();
+        dto.want = recipe.getWant();
 
         return dto;
     }

@@ -1,0 +1,98 @@
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import Layout from '../components/Layout';
+
+import '../App.css';
+
+const Header = () => (
+  <span>List</span>
+);
+
+const Main = () => {
+  const [ingredients, setIngredients] = useState([]);
+
+  const fetchIngredients = async () => {
+    const url = "http://localhost:8080/shopping-list/";
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      setIngredients(json);
+      console.log(ingredients);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchIngredients();
+  }, []);
+
+  return (
+    <div className="v-stack-fill">
+      <div className="v-grow-scroll">
+        {ingredients.length > 0 ? (
+          <div>
+            <table className="table table-bordered">
+              <thead className="thead-light sticky-top top-0">
+                <tr>
+                  <th>Ingredient</th>
+                  <th>Needed Quantity</th>
+                  <th>Kroger Item</th>
+                  <th>Kroger Item Quantity</th>
+                  <th>Item Price</th>
+                  <th>Recipes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ingredients.map((ingredient) => (
+                  <tr key={ingredient.ingredientDTO.id}>
+                    <td>{ingredient.ingredientDTO.name}</td>
+                    <td>{ingredient.neededQuantity || '-'}</td>
+                    <td>{ingredient.krogerItem?.name || '-'}</td>
+                    <td><input type='number' /></td>
+                    <td>{ingredient.krogerItem?.price ? `$${ingredient.krogerItem.price.toFixed(2)}` : '-'}</td>
+                    <td>
+                      {ingredient.neededBy.map((recipe, index) => (
+                        <div key={index}>{recipe}</div>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p>No ingredients available</p>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+const Footer = ({ id }) => {
+  return (
+    <div className='d-flex flex-row justify-content-between'>
+      <button className='btn btn-danger'>Back</button>
+      <button type="submit"className='btn btn-primary'>Order</button>
+    </div>
+  );
+};
+
+const List = () => {
+  return (
+    <Layout
+      header={<Header />}
+      main={<Main />}
+      footer={<Footer />}
+    >
+    </Layout>
+  );
+};
+
+export default List;

@@ -16,6 +16,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <a className="nav-link" href="/pantry">Pantry</a>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/list">List</a>
+                        </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
