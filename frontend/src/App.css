@@ -7,7 +7,11 @@
 .v-grow-scroll {
   flex: 1 1 auto;
   overflow-y: auto;
-  overflow-x: hidden; /* optional: prevent horizontal scrolling */
+  overflow-x: hidden;
+}
+
+.allow-horizontal-scroll {
+  overflow-x: scroll;
 }
 
 .fake-link {
