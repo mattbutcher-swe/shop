@@ -10,5 +10,11 @@
   overflow-x: hidden; /* optional: prevent horizontal scrolling */
 }
 
+.fake-link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 
 

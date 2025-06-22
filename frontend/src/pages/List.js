@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
+import ItemSelector from './ItemSelector';
+import Modal from '../components/Modal';
 
 import '../App.css';
 
@@ -10,6 +12,8 @@ const Header = () => (
 
 const Main = () => {
   const [ingredients, setIngredients] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeIngredient, setActiveIngredient] = useState(null);
 
   const fetchIngredients = async () => {
     const url = "http://localhost:8080/shopping-list/";
@@ -40,10 +44,10 @@ const Main = () => {
             <table className="table table-bordered">
               <thead className="thead-light sticky-top top-0">
                 <tr>
-                  <th>Ingredient</th>
+                  <th>Needed Item</th>
                   <th>Needed Quantity</th>
-                  <th>Kroger Item</th>
-                  <th>Kroger Item Quantity</th>
+                  <th>Purchase Item</th>
+                  <th>Purchase Quantity</th>
                   <th>Recipes</th>
                 </tr>
               </thead>
@@ -56,9 +60,15 @@ const Main = () => {
                     <tr key={ingredient.ingredientDTO.id}>
                       <td>{ingredient.ingredientDTO.name}</td>
                       <td>
-                        {difference < 0 ? "Enough in stock" : difference}
+                        {difference <= 0 ? "Enough in stock" : difference}
                       </td>
-                      <td>{ingredient.krogerItem?.name || '-'}</td>
+                      <td>
+                        {ingredient.krogerItem?.name || '-'}<br />
+                        <span className="fake-link" onClick={() => {
+                          setActiveIngredient(ingredient.ingredientDTO.name);
+                          setIsModalOpen(true);
+                        }}>Options</span>
+                      </td>
                       <td><input type="number" /></td>
                       <td>
                         {ingredient.neededBy.map((recipe, index) => (
@@ -76,6 +86,9 @@ const Main = () => {
         )}
 
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ItemSelector isOpen={isModalOpen} activeIngredient={activeIngredient} />
+      </Modal>
     </div>
   );
 }

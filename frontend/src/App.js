@@ -8,6 +8,7 @@ import Pantry from './pages/Pantry';
 import NotFound from './pages/NotFound';
 import Settings from './pages/Settings';
 import List from './pages/List';
+import ItemSelector from './pages/ItemSelector';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
       <Route path="/pantry" element={<Pantry />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/list" element={<List />} />
+      <Route path="/item-selector" element={<ItemSelector />} />
+
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

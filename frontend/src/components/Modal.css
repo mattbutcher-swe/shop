@@ -1,0 +1,67 @@
+.modal-overlay {
+    position: fixed;
+    top: 10vh;      /* less space from top */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;  /* no transparency */
+    z-index: 2000;
+    width: auto;        /* shrink to fit */
+    /* min-width: 300px;
+    max-width: 600px;   match modal content max width */
+    height: 80vh;   /* keep vertical max height */
+    box-sizing: border-box;
+    overflow-y: auto;   /* scroll if content too tall */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border: 1px solid black;
+    border-radius: 8px;
+  }
+  
+  .modal-content {
+    background: transparent; /* make content background transparent since overlay is white */
+    padding: 0;              /* remove extra padding here */
+    border-radius: 0;
+    width: 100%;
+    max-height: 100%;
+    position: relative;
+    padding-left: 2rem;      /* same padding as modal-content */
+    padding-right: 2rem;      /* same padding as modal-content */
+  }
+
+  /* Custom Half-Width Container Based on Bootstrap */
+.container-half {
+    width: 90%;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  /* Half of Bootstrap 5's container max-widths */
+  @media (min-width: 576px) {
+    .container-half {
+      max-width: 400px; /* Bootstrap: 540px */
+    }
+  }
+  @media (min-width: 768px) {
+    .container-half {
+      max-width: 500px; /* Bootstrap: 720px */
+    }
+  }
+  @media (min-width: 992px) {
+    .container-half {
+      max-width: 600px; /* Bootstrap: 960px */
+    }
+  }
+  @media (min-width: 1200px) {
+    .container-half {
+      max-width: 600px; /* Bootstrap: 1140px */
+    }
+  }
+  @media (min-width: 1400px) {
+    .container-half {
+      max-width: 660px; /* Bootstrap: 1320px */
+    }
+  }

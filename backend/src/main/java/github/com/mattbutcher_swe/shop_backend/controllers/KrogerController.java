@@ -2,9 +2,11 @@ package github.com.mattbutcher_swe.shop_backend.controllers;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,8 @@ public class KrogerController {
     @GetMapping("/search/{name}")
     public ResponseEntity<String> searchKrogerForItem(@PathVariable String name) {
         try {
+            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString());
+
             String environment = settingRepository.findBySettingKey("environment")
                     .orElseThrow(() -> new RuntimeException("Missing 'environment' setting"))
                     .getSettingValue();
@@ -93,7 +97,7 @@ public class KrogerController {
             String baseUrl = environment.equals("dev") ? "https://api-ce.kroger.com/v1/" : "https://api.kroger.com/v1/";
             String accessToken = fetchAccessToken();
     
-            String searchUrl = baseUrl + "products?filter.term=" + name +
+            String searchUrl = baseUrl + "products?filter.term=" + encodedName +
                     "&filter.locationId=01100210&filter.limit=40";
     
             HttpRequest searchRequest = HttpRequest.newBuilder()
