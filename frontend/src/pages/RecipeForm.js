@@ -177,7 +177,7 @@ const Footer = ({ id }) => {
   const navigate = useNavigate();
 
   const deleteMeal = async () => {
-    if (confirm('Please confirm deletion.')) {
+    if (window.confirm('Please confirm deletion.')) {
       let url = "http://localhost:8080/recipes/delete/" + id;
       const response = await fetch(url, { method: 'DELETE' });
 

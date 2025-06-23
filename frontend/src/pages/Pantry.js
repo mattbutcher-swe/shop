@@ -38,7 +38,7 @@ const Main = () => {
     }
 
     const deleteIngredient = async (ingredient) => {
-        if (confirm('Please confirm deletion')) {
+        if (window.confirm('Please confirm deletion')) {
             const url = "http://localhost:8080/pantry/delete/" + ingredient.id;
             try {
                 const response = await fetch(url, { method: 'DELETE' });
@@ -202,7 +202,7 @@ const Main = () => {
                     </button>
                 </div>
             </form>
-            <div className='v-grow-scroll mb-4'>
+            <div className='v-grow-scroll'>
                 {filteredIngredients.map((ingredient) => (
                     <div className="form-group row ingredient-form mb-2" key={ingredient.id}>
                         <div className="col-sm-4">

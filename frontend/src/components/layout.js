@@ -15,11 +15,13 @@ const Layout = ({ header, main, footer }) => {
             {main}
         </div>
       </main>
-      <footer className="footer">
-        <div className='container-lg'>
+      {footer && (
+        <footer className="footer">
+          <div className="container-lg">
             {footer}
-        </div>
-      </footer>
+          </div>
+        </footer>
+      )}
     </div>
   );
 };

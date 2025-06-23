@@ -124,7 +124,7 @@ const ItemSelector = ({ isOpen, activeIngredient, linkKrogerItem }) => {
         </div>
       </div>
       <div className='d-flex bg-white p-2'>
-        <button className="btn btn-primary ms-auto" form='item-selection-form'>Submit</button>
+        <button className="btn btn-primary ms-auto" form='item-selection-form'>Select</button>
       </div>
     </>
   );

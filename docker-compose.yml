@@ -4,7 +4,6 @@ services:
   frontend:
     build: 
       context: ./frontend
-      no_cache: true
     ports:
       - 80:3000
     volumes:
@@ -13,8 +12,10 @@ services:
       - CHOKIDAR_USEPOLLING=true
     develop:
       watch:
-        - action: rebuild
-          path: ./frontend/package.json
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend/package-lock.json
+          action: rebuild
   backend:
     build: ./backend
     ports:
@@ -22,6 +23,9 @@ services:
       - 5005:5005
     volumes:
       - ./backend/target/classes:/app/classes
+      - ./backend/target/dependency:/app/dependency
+    depends_on:
+      - database
   database:
     image: mysql:latest
     environment:

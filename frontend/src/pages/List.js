@@ -73,6 +73,8 @@ const Main = ({ setSubmitOrderFn }) => {
         quantity: quantities[ingredient.ingredientDTO.id],
       }));
 
+      console.log(orderItems);
+
     if (orderItems.length === 0) {
       alert("No items selected for ordering.");
       return;
@@ -141,7 +143,7 @@ const Main = ({ setSubmitOrderFn }) => {
                             {ingredient.krogerItem.name} ({formatPrice(ingredient.krogerItem.price)})
                           </>
                         ) : (
-                          '-'
+                          'No item selected'
                         )}
                         <br />
                         <span
@@ -202,8 +204,7 @@ const Main = ({ setSubmitOrderFn }) => {
 
 const Footer = ({ submitOrder }) => {
   return (
-    <div className="d-flex flex-row justify-content-between">
-      <button className="btn btn-danger">Back</button>
+    <div className="d-flex flex-row justify-content-end">
       <button type="button" className="btn btn-primary" onClick={submitOrder}>
         Order
       </button>
