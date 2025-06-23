@@ -17,13 +17,15 @@ services:
         - path: ./frontend/package-lock.json
           action: rebuild
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     ports:
-      - 8080:8080
-      - 5005:5005
+      - "8080:8080"
+      - "5005:5005"  # Debug port
     volumes:
-      - ./backend/target/classes:/app/classes
-      - ./backend/target/dependency:/app/dependency
+      - ./backend:/app
+    environment:
+      - SPRING_DEVTOOLS_REMOTE_SECRET=debug  # Optional if you use remote restart
     depends_on:
       - database
   database:
