@@ -23,32 +23,76 @@ const Main = ({ setSubmitOrderFn }) => {
       }
 
       const json = await response.json();
+      console.log(json);
       setIngredients(json);
+
+      const initialQuantities = {};
+      json.forEach((ingredient) => {
+        const id = ingredient.ingredientDTO.id;
+        const purchaseQuantity = ingredient.ingredientDTO.purchaseQuantity || 0;
+        initialQuantities[id] = purchaseQuantity;
+      });
+      setQuantities(initialQuantities);
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  const linkKrogerItem = (selectedProduct) => {
+  const linkKrogerItem = async (selectedProduct) => {
     if (!activeIngredient) return;
+
+    let ingredientToUpdate = null;
 
     const updatedIngredients = ingredients.map((ingredient) => {
       if (ingredient.ingredientDTO.name === activeIngredient) {
-        return {
-          ...ingredient,
-          krogerItem: {
-            id: selectedProduct.id,
-            name: selectedProduct.name,
-            price: selectedProduct.promo ? selectedProduct.promo : selectedProduct.price,
-          },
+        const krogerItemDTO = {
+          id: selectedProduct.id,
+          name: selectedProduct.name,
+          price: selectedProduct.promo ? selectedProduct.promo : selectedProduct.price,
+          weight: selectedProduct.weight,
         };
+
+        ingredientToUpdate = {
+          ...ingredient,
+          ingredientDTO: {
+            ...ingredient.ingredientDTO,
+            krogerItemDTO: krogerItemDTO,
+          },
+        }
+
+        return ingredientToUpdate;
       }
+
       return ingredient;
+    });
+
+    const url = 'http://localhost:8080/shopping-list/link-item';
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ingredientToUpdate.ingredientDTO)
     });
 
     setIngredients(updatedIngredients);
     setIsModalOpen(false);
   };
+
+  const updateItemQuantity = async (quantity, ingredientDTO) => {
+    ingredientDTO.purchaseQuantity = quantity;
+
+    const url = 'http://localhost:8080/shopping-list/update-purchase-quantity';
+
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ingredientDTO)
+    });
+  }
 
   const formatPrice = (price) => {
     if (price == null) return '-';
@@ -61,19 +105,17 @@ const Main = ({ setSubmitOrderFn }) => {
   const subtotal = ingredients.reduce((acc, ingredient) => {
     const id = ingredient.ingredientDTO.id;
     const quantity = quantities[id] || 0;
-    const price = ingredient.krogerItem?.price || 0;
+    const price = ingredient.ingredientDTO.krogerItemDTO?.price || 0;
     return acc + price * quantity;
   }, 0);
 
   const submitOrder = async () => {
     const orderItems = ingredients
-      .filter((ingredient) => ingredient.krogerItem && quantities[ingredient.ingredientDTO.id] > 0)
+      .filter((ingredient) => ingredient.ingredientDTO.krogerItemDTO && quantities[ingredient.ingredientDTO.id] > 0)
       .map((ingredient) => ({
-        krogerItemId: ingredient.krogerItem.id,
+        krogerItemId: ingredient.ingredientDTO.krogerItemDTO.id,
         quantity: quantities[ingredient.ingredientDTO.id],
       }));
-
-      console.log(orderItems);
 
     if (orderItems.length === 0) {
       alert("No items selected for ordering.");
@@ -138,9 +180,9 @@ const Main = ({ setSubmitOrderFn }) => {
                       <td>{ingredient.ingredientDTO.name}</td>
                       <td>{difference <= 0 ? 'Enough in stock' : difference}</td>
                       <td>
-                        {ingredient.krogerItem ? (
+                        {ingredient.ingredientDTO.krogerItemDTO ? (
                           <>
-                            {ingredient.krogerItem.name} ({formatPrice(ingredient.krogerItem.price)})
+                            {ingredient.ingredientDTO.krogerItemDTO.name} ({formatPrice(ingredient.ingredientDTO.krogerItemDTO.price)})
                           </>
                         ) : (
                           'No item selected'
@@ -160,12 +202,13 @@ const Main = ({ setSubmitOrderFn }) => {
                         <input
                           type="number"
                           min="0"
-                          value={quantities[id] || ''}
+                          value={ingredient.ingredientDTO.purchaseQuantity}
                           onChange={(e) => {
                             const newQuantities = {
                               ...quantities,
                               [id]: Number(e.target.value),
                             };
+                            updateItemQuantity(e.target.value, ingredient.ingredientDTO);
                             setQuantities(newQuantities);
                           }}
                         />
@@ -188,7 +231,7 @@ const Main = ({ setSubmitOrderFn }) => {
             </table>
           </div>
         ) : (
-          <p>No ingredients available</p>
+          <p>Loading ...</p>
         )}
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

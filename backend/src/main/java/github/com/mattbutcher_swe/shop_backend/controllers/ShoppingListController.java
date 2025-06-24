@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import github.com.mattbutcher_swe.shop_backend.dtos.IngredientDTO;
+import github.com.mattbutcher_swe.shop_backend.dtos.KrogerItemDTO;
 import github.com.mattbutcher_swe.shop_backend.dtos.NeededIngredientDTO;
 import github.com.mattbutcher_swe.shop_backend.dtos.RecipeDTO;
+import github.com.mattbutcher_swe.shop_backend.models.Ingredient;
+import github.com.mattbutcher_swe.shop_backend.models.KrogerItem;
 import github.com.mattbutcher_swe.shop_backend.models.Recipe;
 import github.com.mattbutcher_swe.shop_backend.models.RecipeIngredient;
-
+import github.com.mattbutcher_swe.shop_backend.repositories.IngredientRepository;
 import github.com.mattbutcher_swe.shop_backend.repositories.RecipeRepository;
 import jakarta.transaction.Transactional;
 
@@ -29,6 +32,9 @@ public class ShoppingListController {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @GetMapping("/")
     public List<NeededIngredientDTO> getNeededIngredients() {
@@ -79,6 +85,30 @@ public class ShoppingListController {
                 recipeRepository.save(recipe);
             }
         }
+    }
+
+    @PostMapping("/link-item")
+    public void linkItem(@RequestBody IngredientDTO ingredientDTO) {
+       Ingredient ingredient = ingredientRepository.findById(ingredientDTO.id).get();
+       KrogerItem krogerItem = new KrogerItem();
+       KrogerItemDTO krogerItemDTO = ingredientDTO.krogerItemDTO;
+
+       krogerItem.setId(krogerItemDTO.id);
+       krogerItem.setIngredient(ingredient);
+       krogerItem.setName(krogerItemDTO.name);
+       krogerItem.setPrice(krogerItemDTO.price);
+       krogerItem.setWeight(krogerItemDTO.weight);
+
+       ingredient.setKrogerItem(krogerItem);
+
+       ingredientRepository.save(ingredient);
+    }
+
+    @PostMapping("/update-purchase-quantity")
+    public void updatePurchaseQuantity(@RequestBody IngredientDTO ingredientDTO) {
+       Ingredient ingredient = ingredientRepository.findById(ingredientDTO.id).get();
+       ingredient.setPurchaseQuantity(ingredientDTO.purchaseQuantity);
+       ingredientRepository.save(ingredient);
     }
 
 }

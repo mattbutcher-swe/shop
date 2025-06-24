@@ -9,7 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Ingredient {
@@ -26,6 +28,13 @@ public class Ingredient {
 
     @Column(name = "pantry_quantity")
     private Integer pantryQuantity;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "kroger_item_id")
+    private KrogerItem krogerItem;
+
+    @Column(name = "purchase_quantity")
+    private Integer purchaseQuantity;
 
     public Long getId() {
         return id;
@@ -59,5 +68,20 @@ public class Ingredient {
         this.recipeUsages = recipeUsages;
     }
 
-    
+    public KrogerItem getKrogerItem() {
+        return krogerItem;
+    }
+
+    public void setKrogerItem(KrogerItem krogerItem) {
+        this.krogerItem = krogerItem;
+    }
+
+    public Integer getPurchaseQuantity() {
+        return this.purchaseQuantity;
+    }
+
+    public void setPurchaseQuantity(Integer quantity) {
+        this.purchaseQuantity = quantity;
+    }
+
 }
