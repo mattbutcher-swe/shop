@@ -14,6 +14,7 @@ const Header = () => (
 
 const Main = ({ recipesToOrder, setRecipesToOrder }) => {
   const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const updateRecipesToOrder = (recipeId, order) => {
     if (order) {
@@ -38,6 +39,7 @@ const Main = ({ recipesToOrder, setRecipesToOrder }) => {
       const json = await response.json();
       setRecipes(json);
       setRecipesToOrder(json.filter((recipe) => recipe.want === true));
+      setLoading(false);
     } catch (error) {
       console.error(error.message);
     }
@@ -57,11 +59,17 @@ const Main = ({ recipesToOrder, setRecipesToOrder }) => {
         </Link>
       </div>
       <div className='row v-grow-scroll'>
-        {recipes.map((recipe) => (
-          <div className='col-lg-3 col-md-4 col-6 mb-4' key={recipe.id}>
-            <RecipeTile recipe={recipe} updateRecipesToOrder={updateRecipesToOrder} />
+        {loading ? (
+          <div className='d-flex h-100 justify-content-center align-items-center' style={{ textAlign: 'center', padding: '2rem' }}>
+            <div className="spinner-border text-primary" role="status">
+            </div>
           </div>
-        ))}
+        ) : (
+          recipes.map((recipe) => (
+            <div className='col-lg-3 col-md-4 col-6 mb-4' key={recipe.id}>
+              <RecipeTile recipe={recipe} updateRecipesToOrder={updateRecipesToOrder} />
+            </div>
+          )))}
       </div>
     </div>
   );

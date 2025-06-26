@@ -11,6 +11,7 @@ const Header = () => (
 const Main = () => {
     const [ingredients, setIngredients] = useState([]);
     const [filteredIngredients, setFilteredIngredients] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchIngredients();
@@ -21,7 +22,7 @@ const Main = () => {
         const maxDistance = Math.floor(word.length * 0.5);
         const close = distance(word, filter) <= maxDistance;
         const substring = word.includes(filter.toLowerCase());
-        
+
         return close || substring;
     }
 
@@ -156,6 +157,7 @@ const Main = () => {
             const json = await response.json();
             setIngredients(json);
             setFilteredIngredients(json);
+            setLoading(false);
         } catch (error) {
             console.error(error.message);
         }
@@ -203,45 +205,53 @@ const Main = () => {
                 </div>
             </form>
             <div className='v-grow-scroll'>
-                {filteredIngredients.map((ingredient) => (
-                    <div className="form-group row ingredient-form mb-2" key={ingredient.id}>
-                        <div className="col-sm-4">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Name"
-                                name='name'
-                                defaultValue={ingredient.name}
-                                required
-                            />
-                        </div>
-                        <div className="col-sm-4">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Out of stock"
-                                name='quantity'
-                                defaultValue={ingredient.quantity}
-                            />
-                        </div>
-                        <div className="col-sm-4 d-flex justify-content-end">
-                            <button
-                                type="button"
-                                className='btn btn-danger'
-                                onClick={() => deleteIngredient(ingredient)}
-                            >
-                                Delete
-                            </button>
-                            <button
-                                type="button"
-                                className='btn btn-primary ms-2'
-                                onClick={(e) => updateIngredient(ingredient, e)}
-                            >
-                                Update
-                            </button>
+                {loading ? (
+                    <div className='d-flex h-100 justify-content-center align-items-center' style={{ textAlign: 'center', padding: '2rem' }}>
+                        <div className="spinner-border text-primary" role="status">
                         </div>
                     </div>
-                ))}
+                ) : (
+                    filteredIngredients.map((ingredient) => (
+                        <div className="form-group row ingredient-form mb-2" key={ingredient.id}>
+                            <div className="col-sm-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Name"
+                                    name='name'
+                                    defaultValue={ingredient.name}
+                                    required
+                                />
+                            </div>
+                            <div className="col-sm-4">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Out of stock"
+                                    name='quantity'
+                                    defaultValue={ingredient.quantity}
+                                />
+                            </div>
+                            <div className="col-sm-4 d-flex justify-content-end">
+                                <button
+                                    type="button"
+                                    className='btn btn-danger'
+                                    onClick={() => deleteIngredient(ingredient)}
+                                >
+                                    Delete
+                                </button>
+                                <button
+                                    type="button"
+                                    className='btn btn-primary ms-2'
+                                    onClick={(e) => updateIngredient(ingredient, e)}
+                                >
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                )
+                }
             </div>
         </div>
     );
