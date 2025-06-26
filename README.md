@@ -62,12 +62,10 @@ This starts:
 1. Recipes contain a list of ingredients with required quantities.
 2. You track which ingredients you already have in your pantry.
 3. The app calculates what's missing.
-4. The app (soon) matches those ingredients to Kroger product listings.
-5. A shopping cart is built automatically through the Kroger Cart API.
+5. A shopping cart is built automatically through the Kroger Cart API (soon).
 
 ## TODOs
 
-- Ingredient ↔ Kroger item matching UI
 - Quantity normalization and unit conversion
 - Generate and submit Kroger cart from missing items
 - Improve UX for pantry + recipe editing
